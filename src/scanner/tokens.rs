@@ -50,6 +50,8 @@ pub enum Token {
     If,
     Else,
     While,
+    Repeat,
+    Until,
     For,
     In,
 }
@@ -76,6 +78,8 @@ impl Token {
             "if" => Self::If,
             "else" => Self::Else,
             "while" => Self::While,
+            "repeat" => Self::Repeat,
+            "until" => Self::Until,
             "for" => Self::For,
             "in" => Self::In,
             _ => Self::Ident(ident)
@@ -128,6 +132,8 @@ impl Display for Token {
             Self::If => write!(f, "if"),
             Self::Else => write!(f, "else"),
             Self::While => write!(f, "while"),
+            Self::Repeat => write!(f, "repeat"),
+            Self::Until => write!(f, "until"),
             Self::For => write!(f, "for"),
             Self::In => write!(f, "in"),
         }
