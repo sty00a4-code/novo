@@ -1,0 +1,8 @@
+[package]
+name = "novo"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "novi"
+path = "src/main.rs"
