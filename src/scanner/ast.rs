@@ -14,7 +14,7 @@ pub enum Statement {
         idents: Vec<Located<Assignee>>,
         exprs: Vec<Located<Expression>>,
     },
-    Do(Block),
+    Do(Located<Block>),
     If {
         cond: Located<Expression>,
         case: Located<Block>,
@@ -28,6 +28,7 @@ pub enum Statement {
         body: Located<Block>,
         cond: Located<Expression>,
     },
+    Loop(Located<Block>),
     For {
         vars: Located<String>,
         iter: Located<Expression>,
@@ -40,8 +41,69 @@ pub enum Assignee {
     Field(String),
 }
 #[derive(Debug, Clone, PartialEq)]
-pub enum Expression {}
+pub enum Expression {
+    Atom(Atom),
+    Binary {
+        op: BinaryOperator,
+        left: Box<Located<Self>>,
+        right: Box<Located<Self>>,
+    },
+    Unary {
+        op: UnaryOperator,
+        right: Box<Located<Self>>,
+    },
+    Call {
+        head: Located<Atom>,
+        args: Vec<Located<Self>>,
+    },
+    Obj(Block),
+    Fn {
+        params: Vec<Located<String>>,
+        body: Located<Block>
+    },
+}
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum BinaryOperator {
+    Plus,
+    Minus,
+    Star,
+    Slash,
+    Percent,
+    Exponent,
+    EqualEqual,
+    ExclamationEqual,
+    Less,
+    Greater,
+    LessEqual,
+    GreaterEqual,
+    Ampersand,
+    Pipe,
+}
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum UnaryOperator {
+    Minus,
+    Exclamation,
+}
 #[derive(Debug, Clone, PartialEq)]
-pub enum Atom {}
+pub enum Atom {
+    Path(Path),
+    Int(isize),
+    Float(f64),
+    Bool(bool),
+    Char(char),
+    String(String),
+    Expression(Box<Located<Expression>>),
+    Vector(Vec<Located<Expression>>),
+}
 #[derive(Debug, Clone, PartialEq)]
-pub enum Path {}
+pub enum Path {
+    Ident(String),
+    Field {
+        head: Box<Located<Self>>,
+        field: Located<String>
+    },
+    Index {
+        head: Box<Located<Self>>,
+        index: Box<Located<Expression>>
+    },
+}
