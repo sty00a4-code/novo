@@ -48,6 +48,12 @@ impl<T> Spanned<T> {
             span: self.span,
         }
     }
+    pub fn with_ln(self, ln: usize) -> Located<T> {
+        Located {
+            value: self.value,
+            pos: Position::new(ln..ln + 1, self.span),
+        }
+    }
 }
 impl<T: Debug> Debug for Spanned<T> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
@@ -130,7 +136,7 @@ impl<T> PathLocated<T> {
         PathLocated {
             value: f(self.value),
             pos: self.pos,
-            path: self.path
+            path: self.path,
         }
     }
 }
@@ -149,7 +155,7 @@ impl<T: Clone> Clone for PathLocated<T> {
         Self {
             value: self.value.clone(),
             pos: self.pos.clone(),
-            path: Rc::clone(&self.path)
+            path: Rc::clone(&self.path),
         }
     }
 }

@@ -1,10 +1,9 @@
-use std::{
-    fmt::Display, iter::{Enumerate, Peekable}, num::{ParseFloatError, ParseIntError}, str::{Chars, Lines}
-};
-
 use super::{
     position::{Located, Position, Spanned},
     tokens::Token,
+};
+use std::{
+    error::Error, fmt::Display, iter::{Enumerate, Peekable}, num::{ParseFloatError, ParseIntError}, str::{Chars, Lines}
 };
 
 #[derive(Debug, Clone)]
@@ -284,7 +283,7 @@ impl<'a> Iterator for LineLexer<'a> {
                     span.end = col + 1;
                     self.chars.next();
                 }
-                Some(Ok(Spanned::new(Token::Ident(ident), span)))
+                Some(Ok(Spanned::new(Token::ident(ident), span)))
             }
             c => Some(Err(Spanned::new(LexError::BadCharacter(c), span))),
         }
@@ -302,6 +301,7 @@ impl Display for LexError {
         }
     }
 }
+impl Error for LexError {}
 
 pub fn lex(text: &str) -> Result<Vec<Line>, Located<LexError>> {
     let mut lines = vec![];

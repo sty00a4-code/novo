@@ -13,14 +13,14 @@ pub enum Token {
     Comma,
     Dot,
     Colon,
-    
+
     ParanLeft,
     ParanRight,
     BracketLeft,
     BracketRight,
     BraceLeft,
     BraceRight,
-    
+
     Plus,
     Minus,
     Star,
@@ -33,7 +33,7 @@ pub enum Token {
     SlashEqual,
     PercentEqual,
     ExponentEqual,
-    
+
     EqualEqual,
     ExclamationEqual,
     Less,
@@ -46,14 +46,21 @@ pub enum Token {
 
     Let,
     Fn,
-    Obj,
+    With,
+    As,
+    Do,
     If,
     Else,
+    Loop,
     While,
     Repeat,
     Until,
     For,
     In,
+    Break,
+    Continue,
+    Return,
+    Obj,
 }
 
 impl Token {
@@ -65,7 +72,7 @@ impl Token {
             Self::Bool(_) => "<bool>".to_string(),
             Self::Char(_) => "<char>".to_string(),
             Self::String(_) => "<string>".to_string(),
-            token => format!("{:?}", token.to_string())
+            token => format!("{:?}", token.to_string()),
         }
     }
     pub fn ident(ident: String) -> Self {
@@ -74,15 +81,22 @@ impl Token {
             "false" => Self::Bool(false),
             "let" => Self::Let,
             "fn" => Self::Fn,
-            "obj" => Self::Obj,
+            "with" => Self::With,
+            "as" => Self::As,
+            "do" => Self::Do,
             "if" => Self::If,
             "else" => Self::Else,
+            "loop" => Self::Loop,
             "while" => Self::While,
             "repeat" => Self::Repeat,
             "until" => Self::Until,
             "for" => Self::For,
             "in" => Self::In,
-            _ => Self::Ident(ident)
+            "break" => Self::Break,
+            "continue" => Self::Continue,
+            "return" => Self::Return,
+            "obj" => Self::Obj,
+            _ => Self::Ident(ident),
         }
     }
 }
@@ -128,14 +142,21 @@ impl Display for Token {
             Self::Pipe => write!(f, "|"),
             Self::Let => write!(f, "let"),
             Self::Fn => write!(f, "fn"),
-            Self::Obj => write!(f, "obj"),
+            Self::With => write!(f, "with"),
+            Self::As => write!(f, "as"),
+            Self::Do => write!(f, "do"),
             Self::If => write!(f, "if"),
             Self::Else => write!(f, "else"),
+            Self::Loop => write!(f, "loop"),
             Self::While => write!(f, "while"),
             Self::Repeat => write!(f, "repeat"),
             Self::Until => write!(f, "until"),
             Self::For => write!(f, "for"),
             Self::In => write!(f, "in"),
+            Self::Break => write!(f, "break"),
+            Self::Continue => write!(f, "continue"),
+            Self::Return => write!(f, "return"),
+            Self::Obj => write!(f, "obj"),
         }
     }
 }

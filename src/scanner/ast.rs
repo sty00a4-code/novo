@@ -1,9 +1,9 @@
 use super::position::Located;
 
 #[derive(Debug, Clone, PartialEq)]
-pub struct Chunk(Vec<Located<Statement>>);
+pub struct Chunk(pub Vec<Located<Statement>>);
 #[derive(Debug, Clone, PartialEq)]
-pub struct Block(Vec<Located<Statement>>);
+pub struct Block(pub Vec<Located<Statement>>);
 #[derive(Debug, Clone, PartialEq)]
 pub enum Statement {
     Let {
@@ -14,12 +14,20 @@ pub enum Statement {
         idents: Vec<Located<Assignee>>,
         exprs: Vec<Located<Expression>>,
     },
+    With {
+        expr: Located<Expression>,
+        ident: Option<Located<String>>,
+        body: Located<Block>,
+    },
+
     Do(Located<Block>),
     If {
         cond: Located<Expression>,
         case: Located<Block>,
         else_case: Option<Located<Block>>,
     },
+
+    Loop(Located<Block>),
     While {
         cond: Located<Expression>,
         body: Located<Block>,
@@ -28,12 +36,15 @@ pub enum Statement {
         body: Located<Block>,
         cond: Located<Expression>,
     },
-    Loop(Located<Block>),
     For {
-        vars: Located<String>,
+        var: Located<String>,
         iter: Located<Expression>,
         body: Located<Block>,
     },
+
+    Break,
+    Continue,
+    Return(Located<Expression>),
 }
 #[derive(Debug, Clone, PartialEq)]
 pub enum Assignee {
@@ -57,9 +68,14 @@ pub enum Expression {
         args: Vec<Located<Self>>,
     },
     Obj(Block),
+    If {
+        cond: Box<Located<Self>>,
+        case: Located<Block>,
+        else_case: Option<Located<Block>>,
+    },
     Fn {
         params: Vec<Located<String>>,
-        body: Located<Block>
+        body: Located<Block>,
     },
 }
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -100,10 +116,10 @@ pub enum Path {
     Ident(String),
     Field {
         head: Box<Located<Self>>,
-        field: Located<String>
+        field: Located<String>,
     },
     Index {
         head: Box<Located<Self>>,
-        index: Box<Located<Expression>>
+        index: Box<Located<Expression>>,
     },
 }
