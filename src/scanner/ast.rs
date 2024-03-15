@@ -11,8 +11,12 @@ pub enum Statement {
         exprs: Vec<Located<Expression>>,
     },
     Assign {
-        idents: Vec<Located<Assignee>>,
+        idents: Vec<Located<Variable>>,
         exprs: Vec<Located<Expression>>,
+    },
+    Call {
+        var: Located<Variable>,
+        args: Vec<Located<Expression>>,
     },
     With {
         expr: Located<Expression>,
@@ -47,11 +51,6 @@ pub enum Statement {
     Return(Located<Expression>),
 }
 #[derive(Debug, Clone, PartialEq)]
-pub enum Assignee {
-    Ident(String),
-    Field(String),
-}
-#[derive(Debug, Clone, PartialEq)]
 pub enum Expression {
     Atom(Atom),
     Binary {
@@ -64,10 +63,10 @@ pub enum Expression {
         right: Box<Located<Self>>,
     },
     Call {
-        head: Located<Atom>,
+        head: Box<Located<Self>>,
         args: Vec<Located<Self>>,
     },
-    Obj(Block),
+    Obj(Located<Block>),
     If {
         cond: Box<Located<Self>>,
         case: Located<Block>,
@@ -113,7 +112,7 @@ pub enum Atom {
 }
 #[derive(Debug, Clone, PartialEq)]
 pub enum Path {
-    Ident(String),
+    Variable(Variable),
     Field {
         head: Box<Located<Self>>,
         field: Located<String>,
@@ -122,4 +121,9 @@ pub enum Path {
         head: Box<Located<Self>>,
         index: Box<Located<Expression>>,
     },
+}
+#[derive(Debug, Clone, PartialEq)]
+pub enum Variable {
+    Ident(String),
+    Field(String),
 }
