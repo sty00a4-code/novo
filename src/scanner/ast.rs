@@ -102,7 +102,7 @@ pub enum UnaryOperator {
 #[derive(Debug, Clone, PartialEq)]
 pub enum Atom {
     Path(Path),
-    Int(isize),
+    Int(i64),
     Float(f64),
     Bool(bool),
     Char(char),

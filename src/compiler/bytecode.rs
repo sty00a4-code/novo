@@ -1,6 +1,13 @@
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Default)]
+pub struct ByteCodeLocated {
+    pub code: ByteCode,
+    pub ln: u32
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Default)]
 #[repr(u8)]
 pub enum ByteCode {
+    #[default]
     None,
     Jump {
         addr: Address,
@@ -77,4 +84,20 @@ pub enum BinaryOperation {
 pub enum UnaryOperation {
     Neg,
     Not,
+}
+
+#[derive(Debug, Clone, PartialEq)]
+pub struct Closure {
+    pub code: Vec<ByteCodeLocated>,
+    pub registers: Register,
+    pub strings: Vec<String>,
+    pub ints: Vec<i64>,
+    pub floats: Vec<f64>,
+    pub path: Option<Box<str>>,
+    pub upvalues: Vec<Upvalue>,
+}
+#[derive(Debug, Clone, PartialEq)]
+pub struct Upvalue {
+    register: Register,
+    depth: u8,
 }
