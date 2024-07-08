@@ -52,8 +52,10 @@ pub enum ByteCode {
 }
 pub type Register = u16;
 pub type Address = u16;
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Default)]
 pub enum Source {
+    #[default]
+    None,
     Register(Register),
     String(Address),
     Int(Address),
@@ -86,7 +88,7 @@ pub enum UnaryOperation {
     Not,
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Default)]
 pub struct Closure {
     pub code: Vec<ByteCodeLocated>,
     pub registers: Register,
@@ -96,7 +98,7 @@ pub struct Closure {
     pub path: Option<Box<str>>,
     pub upvalues: Vec<Upvalue>,
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Default)]
 pub struct Upvalue {
     register: Register,
     depth: u8,

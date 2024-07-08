@@ -3,6 +3,7 @@ use std::fmt::Display;
 #[derive(Debug, Clone, PartialEq)]
 pub enum Token {
     Ident(String),
+    None,
     Int(i64),
     Float(f64),
     Bool(bool),
@@ -77,6 +78,7 @@ impl Token {
     }
     pub fn ident(ident: String) -> Self {
         match ident.as_str() {
+            "none" => Self::None,
             "true" => Self::Bool(true),
             "false" => Self::Bool(false),
             "let" => Self::Let,
@@ -104,6 +106,7 @@ impl Display for Token {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             Self::Ident(ident) => write!(f, "{ident}"),
+            Self::None => write!(f, "none"),
             Self::Int(int) => write!(f, "{int:?}"),
             Self::Float(float) => write!(f, "{float:?}"),
             Self::Bool(bool) => write!(f, "{bool:?}"),
